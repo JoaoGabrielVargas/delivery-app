@@ -6,8 +6,8 @@ function Routes() {
     <Switch>
       <Route path="/">
         <Redirect to="/login" />
+        <Route path="/login" component={ Login } />
       </Route>
-      <Route path="/login" component={ <Login /> } />
     </Switch>
   );
 }
