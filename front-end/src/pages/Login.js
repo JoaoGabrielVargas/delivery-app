@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+// import axios from 'axios';
+import { emailValidation, passwordValidation } from '../services/validations';
 
 function Login() {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(false);
   const ROUTE = 'common_login';
+
+  const verifyBtn = useCallback(() => {
+    const verifyEmail = emailValidation(email);
+    const verifyPassword = passwordValidation(password);
+    const emailAndPassword = verifyEmail && verifyPassword;
+    setDisable(!(emailAndPassword));
+  }, [email, password]);
+
+  useEffect(() => {
+    verifyBtn();
+  }, [email, password, setDisable, verifyBtn]);
 
   return (
     <div className="login">
@@ -11,20 +25,22 @@ function Login() {
         <div>
           <input
             data-testid={ `${ROUTE}__input-email` }
-            // value={ email }
+            name="email"
+            value={ email }
             placeholder="user@email.com"
-          // onChange={ (e) => setEmail(e.target.value) }
+            onChange={ (e) => setEmail(e.target.value) }
           />
           <input
             data-testid={ `${ROUTE}__input-password` }
-            // value={ password }
+            name="password"
+            value={ password }
             placeholder="******"
-          // onChange={ (e) => setPassword(e.target.value) }
+            onChange={ (e) => setPassword(e.target.value) }
           />
           <button
             data-testid={ `${ROUTE}__button-login` }
             type="button"
-            // disabled={ !isDisabled() }
+            disabled={ disable }
           // onClick={ handleClick }
           >
             Login
