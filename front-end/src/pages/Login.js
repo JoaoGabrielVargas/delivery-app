@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import { emailValidation, passwordValidation } from '../services/validations';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disable, setDisable] = useState(false);
+  const [error, setError] = useState(false);
   const ROUTE = 'common_login';
 
   const verifyBtn = useCallback(() => {
@@ -14,6 +15,15 @@ function Login() {
     const emailAndPassword = verifyEmail && verifyPassword;
     setDisable(!(emailAndPassword));
   }, [email, password]);
+
+  const handleClick = async () => {
+    try {
+      await axios.post('http://localhost:3001/login', { email, password });
+      // redirectRouter(result.data.role);
+    } catch (err) {
+      setError(true);
+    }
+  };
 
   useEffect(() => {
     verifyBtn();
@@ -41,7 +51,7 @@ function Login() {
             data-testid={ `${ROUTE}__button-login` }
             type="button"
             disabled={ disable }
-          // onClick={ handleClick }
+            onClick={ handleClick }
           >
             Login
           </button>
@@ -52,6 +62,10 @@ function Login() {
           >
             Ainda não tenho conta
           </button>
+          {
+            error
+            && <p data-testid={ `${ROUTE}__element-invalid-email` }> Dados inválidos </p>
+          }
         </div>
         {/* <p>adm@deliveryapp.com</p>
         <p>--adm2@21!!--</p>
