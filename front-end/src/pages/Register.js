@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import {
   emailValidation,
   passwordValidation,
   nameValidation,
 } from '../services/validations';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 function Register() {
   const [name, setName] = useState('');
@@ -69,6 +69,7 @@ function Register() {
           <button
             data-testid={ `${ROUTE}__button-register` }
             type="button"
+            disabled={ disable }
             onClick={ handleClick }
           >
             CADASTRAR
