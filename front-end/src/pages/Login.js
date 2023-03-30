@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { emailValidation, passwordValidation } from '../services/validations';
 
@@ -16,10 +17,15 @@ function Login() {
     setDisable(!(emailAndPassword));
   }, [email, password]);
 
+  const history = useHistory();
+
+  const redirectRouter = (role) => {
+    if (role === 'customer') history.push('/customer/products');
+  };
   const handleClick = async () => {
     try {
-      await axios.post('http://localhost:3001/login', { email, password });
-      // redirectRouter(result.data.role);
+      const request = await axios.post('http://localhost:3001/login', { email, password });
+      redirectRouter(request.data);
     } catch (err) {
       setError(true);
     }
@@ -58,7 +64,6 @@ function Login() {
           <button
             data-testid={ `${ROUTE}__button-register` }
             type="button"
-          // onClick={ () => { history.push('/register'); } }
           >
             Ainda não tenho conta
           </button>
@@ -67,16 +72,6 @@ function Login() {
             && <p data-testid={ `${ROUTE}__element-invalid-email` }> Dados inválidos </p>
           }
         </div>
-        {/* <p>adm@deliveryapp.com</p>
-        <p>--adm2@21!!--</p>
-        <p>fulana@deliveryapp.com</p>
-        <p>fulana@123</p>
-        <p>zebirita@email.com</p>
-        <p>$#zebirita#$</p> */}
-        {/* {
-          !isLoginValid
-          && <span data-testid="common_login__element-invalid-email">Invalid Email</span>
-        } */}
       </form>
     </div>
   );
