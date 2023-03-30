@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import {
+  emailValidation,
+  passwordValidation,
+  nameValidation,
+} from '../services/validations';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
@@ -6,7 +11,20 @@ function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(false);
   const ROUTE = 'common_register';
+
+  const verifyBtn = useCallback(() => {
+    const verifyEmail = emailValidation(email);
+    const verifyPassword = passwordValidation(password);
+    const verifyName = nameValidation(name);
+    const dataValidation = verifyEmail && verifyPassword && verifyName;
+    setDisable(!(dataValidation));
+  }, [email, password, name]);
+
+  useEffect(() => {
+    verifyBtn();
+  }, [email, password, name, setDisable, verifyBtn]);
   const history = useHistory();
 
   const redirectRouter = (role) => {

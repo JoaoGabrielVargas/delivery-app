@@ -8,4 +8,9 @@ const passwordValidation = (password) => {
   return password.length >= SIX;
 };
 
-export { emailValidation, passwordValidation };
+const nameValidation = (name) => {
+  const TWELVE = 12;
+  return name.length >= TWELVE;
+};
+
+export { emailValidation, passwordValidation, nameValidation };
