@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import {
   emailValidation,
   passwordValidation,
@@ -23,6 +25,21 @@ function Register() {
   useEffect(() => {
     verifyBtn();
   }, [email, password, name, setDisable, verifyBtn]);
+  const history = useHistory();
+
+  const redirectRouter = (role) => {
+    if (role === 'customer') history.push('/customer/products');
+  };
+
+  const handleClick = async () => {
+    try {
+      const request = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
+      console.log(request);
+      redirectRouter(request.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="register">
@@ -53,7 +70,7 @@ function Register() {
             data-testid={ `${ROUTE}__button-register` }
             type="button"
             disabled={ disable }
-          // onClick={ () => history.push('/register') }
+            onClick={ handleClick }
           >
             CADASTRAR
           </button>
