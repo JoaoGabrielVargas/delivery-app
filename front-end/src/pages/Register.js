@@ -1,10 +1,27 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const ROUTE = 'common_register';
+  const history = useHistory();
+
+  const redirectRouter = (role) => {
+    if (role === 'customer') history.push('/customer/products');
+  };
+
+  const handleClick = async () => {
+    try {
+      const request = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
+      console.log(request);
+      redirectRouter(request.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="register">
@@ -34,7 +51,7 @@ function Register() {
           <button
             data-testid={ `${ROUTE}__button-register` }
             type="button"
-          // onClick={ () => history.push('/register') }
+            onClick={ handleClick }
           >
             CADASTRAR
           </button>
