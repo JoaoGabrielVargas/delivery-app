@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import {
+  emailValidation,
+  passwordValidation,
+  nameValidation,
+} from '../services/validations';
 
 function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(false);
   const ROUTE = 'common_register';
+
+  const verifyBtn = useCallback(() => {
+    const verifyEmail = emailValidation(email);
+    const verifyPassword = passwordValidation(password);
+    const verifyName = nameValidation(name);
+    const dataValidation = verifyEmail && verifyPassword && verifyName;
+    setDisable(!(dataValidation));
+  }, [email, password, name]);
+
+  useEffect(() => {
+    verifyBtn();
+  }, [email, password, name, setDisable, verifyBtn]);
 
   return (
     <div className="register">
@@ -34,6 +52,7 @@ function Register() {
           <button
             data-testid={ `${ROUTE}__button-register` }
             type="button"
+            disabled={ disable }
           // onClick={ () => history.push('/register') }
           >
             CADASTRAR
