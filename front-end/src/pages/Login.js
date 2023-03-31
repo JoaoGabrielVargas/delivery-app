@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { emailValidation, passwordValidation } from '../services/validations';
+import '../style/pages/Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -25,8 +26,10 @@ function Login() {
   const handleClick = async () => {
     try {
       const request = await axios.post('http://localhost:3001/login', { email, password });
+      console.log(request);
       redirectRouter(request.data);
     } catch (err) {
+      console.log(err);
       setError(true);
     }
   };
