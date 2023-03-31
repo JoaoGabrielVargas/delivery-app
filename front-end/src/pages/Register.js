@@ -1,10 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import {
+  emailValidation,
+  passwordValidation,
+  nameValidation,
+} from '../services/validations';
 
 function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [disable, setDisable] = useState(false);
+  const [error, setError] = useState(false);
   const ROUTE = 'common_register';
+
+  const verifyBtn = useCallback(() => {
+    const verifyEmail = emailValidation(email);
+    const verifyPassword = passwordValidation(password);
+    const verifyName = nameValidation(name);
+    const dataValidation = verifyEmail && verifyPassword && verifyName;
+    setDisable(!(dataValidation));
+  }, [email, password, name]);
+
+  useEffect(() => {
+    verifyBtn();
+  }, [email, password, name, setDisable, verifyBtn]);
+  const history = useHistory();
+
+  const redirectRouter = (role) => {
+    if (role === 'customer') history.push('/customer/products');
+  };
+
+  const handleClick = async () => {
+    try {
+      const request = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
+      redirectRouter(request.data);
+    } catch (err) {
+      setError(true);
+    }
+  };
 
   return (
     <div className="register">
@@ -34,11 +69,16 @@ function Register() {
           <button
             data-testid={ `${ROUTE}__button-register` }
             type="button"
-          // onClick={ () => history.push('/register') }
+            disabled={ disable }
+            onClick={ handleClick }
           >
             CADASTRAR
           </button>
-          <p data-testid={ `${ROUTE}__element-invalid-register` }> Invalid data </p>
+          {
+            error
+            && <p data-testid={ `${ROUTE}__element-invalid_register` }> Invalid data </p>
+
+          }
         </div>
       </form>
     </div>
