@@ -6,7 +6,6 @@ const app = express();
 app.use(cors()); 
 const RegisterRouter = require('../routes/RegisterRouter');
 
-
 app.use(express.json()); 
 
 app.use('/login', LoginRouter);
