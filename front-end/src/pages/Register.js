@@ -12,6 +12,7 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disable, setDisable] = useState(false);
+  const [error, setError] = useState(false);
   const ROUTE = 'common_register';
 
   const verifyBtn = useCallback(() => {
@@ -34,10 +35,9 @@ function Register() {
   const handleClick = async () => {
     try {
       const request = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
-      console.log(request);
       redirectRouter(request.data);
     } catch (err) {
-      console.log(err);
+      setError(true);
     }
   };
 
@@ -74,7 +74,11 @@ function Register() {
           >
             CADASTRAR
           </button>
-          <p data-testid={ `${ROUTE}__element-invalid-register` }> Invalid data </p>
+          {
+            error
+            && <p data-testid={ `${ROUTE}__element-invalid_register` }> Invalid data </p>
+
+          }
         </div>
       </form>
     </div>
