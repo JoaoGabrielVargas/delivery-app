@@ -1,24 +1,24 @@
 .products-container {
   align-items: center;
-  border: solid 1px blue;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   justify-content: center;
 
 }
 
 .card-container {
-  border: solid 1px yellow;
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
   padding: 5px;
   width: 80%;
-
 }
 
 .products-cards {
   background-color: aliceblue;
+}
+
+.products-cards img {
+  width: 100px;
 }
 
