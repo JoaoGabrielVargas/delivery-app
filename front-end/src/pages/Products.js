@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import '../style/pages/Products.css';
+import DeliveryContext from '../context/deliveryContext';
 
 function Products() {
-  const idMock = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+  const { products } = useContext(DeliveryContext);
+  // console.log(products);
   return (
     <div className="products-container">
       <Header />
       <div className="card-container">
         {
-          idMock.map((el) => (<ProductCard
-            key={ el }
-            id={ el }
+          products.map((el) => (<ProductCard
+            key={ el.index }
+            products={ el }
             route="customer_products"
           />))
         }

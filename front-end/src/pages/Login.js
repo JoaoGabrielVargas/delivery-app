@@ -9,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState(false);
+  // const [token, setToken] = useState('');
   const ROUTE = 'common_login';
 
   const verifyBtn = useCallback(() => {
@@ -23,11 +24,12 @@ function Login() {
   const redirectRouter = (role) => {
     if (role === 'customer') history.push('/customer/products');
   };
+
   const handleClick = async () => {
     try {
       const request = await axios.post('http://localhost:3001/login', { email, password });
-      console.log(request);
-      redirectRouter(request.data);
+      localStorage.setItem('user', JSON.stringify(request.data));
+      redirectRouter(request.data.role);
     } catch (err) {
       console.log(err);
       setError(true);

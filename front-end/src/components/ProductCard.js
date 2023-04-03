@@ -1,23 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function ProductCard({ id, route }) {
+export default function ProductCard({ products, route }) {
+  const { name, price, urlImage, id } = products;
+  // console.log(products);
   return (
     <div className="products-cards">
       <div>
         <p data-testid={ `${route}__element-card-price-${id}` }>
-          preço item
-          {id}
+          preço
+          {price}
         </p>
-        <img data-testid={ `${route}__img-card-bg-image-${id}` } alt="img" />
+        <img
+          data-testid={ `${route}__img-card-bg-image-${id}` }
+          alt="img"
+          src={ urlImage }
+        />
       </div>
       <div>
         <p data-testid={ `${route}__element-card-title-${id}` }>
-          {' '}
-          nome
-          {' '}
-          {id}
-          {' '}
+          {name}
         </p>
         <div>
           <button
@@ -40,6 +42,12 @@ export default function ProductCard({ id, route }) {
 }
 
 ProductCard.propTypes = {
-  id: PropTypes.string.isRequired,
+  products: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    route: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    urlImage: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+  }).isRequired,
   route: PropTypes.string.isRequired,
 };
