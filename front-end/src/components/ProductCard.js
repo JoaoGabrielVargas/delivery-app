@@ -8,8 +8,7 @@ export default function ProductCard({ products, route }) {
     <div className="products-cards">
       <div>
         <p data-testid={ `${route}__element-card-price-${id}` }>
-          preço
-          {price}
+          {price.replace('.', ',')}
         </p>
         <img
           data-testid={ `${route}__img-card-bg-image-${id}` }
@@ -28,7 +27,10 @@ export default function ProductCard({ products, route }) {
           >
             -
           </button>
-          <input data-testid={ `${route}__input-card-quantity-${id}` } />
+          <input
+            data-testid={ `${route}__input-card-quantity-${id}` }
+            value={ 0 }
+          />
           <button
             type="button"
             data-testid={ `${route}__button-card-add-item-${id}` }
@@ -44,7 +46,6 @@ export default function ProductCard({ products, route }) {
 ProductCard.propTypes = {
   products: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    route: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     urlImage: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
