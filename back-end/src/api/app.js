@@ -14,5 +14,5 @@ app.use('/login', LoginRouter);
 app.use('/register', RegisterRouter);
 app.get('/coffee', (_req, res) => res.status(418).end());
 app.use('/products', ProductsRouter);
-
+  
 module.exports = app;
