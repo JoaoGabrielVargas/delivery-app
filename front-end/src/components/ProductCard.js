@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function ProductCard({ products, route }) {
   const { name, price, urlImage, id } = products;
-  console.log(products);
+  // console.log(products);
   return (
     <div className="products-cards">
       <div>
