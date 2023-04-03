@@ -11,7 +11,7 @@ function DeliveryProvider({ children }) {
       const { data } = await axios.get(
         'http://localhost:3001/products',
       );
-      console.log(data);
+      // console.log(data);
       setProducts(data);
     }
     fetchData();

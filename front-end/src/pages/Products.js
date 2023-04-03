@@ -6,7 +6,7 @@ import DeliveryContext from '../context/deliveryContext';
 
 function Products() {
   const { products } = useContext(DeliveryContext);
-  console.log(products);
+  // console.log(products);
   return (
     <div className="products-container">
       <Header />
