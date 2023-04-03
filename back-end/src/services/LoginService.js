@@ -6,6 +6,7 @@ const { generateToken } = require('../utils/JWT');
 const validateLogin = async (body) => {
   const { email, password } = body;
   const result = await User.findOne({ where: { email } });
+  if (!result) return { statusCode: 404, message: 'Not found' };
 
   const token = generateToken({ email, password });
 
@@ -15,8 +16,6 @@ const validateLogin = async (body) => {
     role: result.role,
     token,
   };
-
-  if (!result) return { statusCode: 404, message: 'Not found' };
 
   const hashPassword = result.password;
 
