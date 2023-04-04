@@ -9,11 +9,6 @@ function CartProvider({ children }) {
     setCartItems(JSON.parse(localStorage.getItem('cart')) || []);
   }, []);
 
-  // useEffect(() => {
-
-  //   // setCartItems([]);
-  // }, [cartItems]);
-
   const addToCart = useCallback((item) => {
     // console.log(cartItems);
     const { priceNumber, quantity } = item;
@@ -22,13 +17,16 @@ function CartProvider({ children }) {
     const invalidIndex = -1;
     const existingItemIndex = cartItems.findIndex((i) => i.name === item.name);
     if (existingItemIndex !== invalidIndex) {
-      const updatedCart = [...cartItems];
+      const updatedCart = cartItems;
+      console.log(updatedCart);
       updatedCart[existingItemIndex].quantity += 1;
+      updatedCart[existingItemIndex].subTotal = Number((priceNumber
+        * parseInt(quantity, 10)).toFixed(2));
       setCartItems(updatedCart);
       localStorage.setItem('cart', JSON.stringify(cartItems));
     } else {
       setCartItems([...cartItems, {
-        ...item, quantity: 1, subTotal: (priceNumber * quantity.toFixed(2)),
+        ...item, quantity: 1, subTotal: priceNumber,
       }]);
       localStorage.setItem('cart', JSON.stringify(cartItems));
     }
