@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import '../style/pages/Products.css';
 import DeliveryContext from '../context/deliveryContext';
 
 function Products() {
-  const { products } = useContext(DeliveryContext);
-  // console.log(products);
+  const { products, cart } = useContext(DeliveryContext);
+
   return (
     <div className="products-container">
       <Header />
