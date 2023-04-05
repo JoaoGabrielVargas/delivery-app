@@ -17,13 +17,15 @@ function DeliveryProvider({ children }) {
   }, []);
 
   const contextValue = useMemo(() => (
-    { products,
-      setProducts }
+    {
+      products,
+      setProducts,
+    }
   ), [products]);
 
   return (
     <DeliveryContext.Provider value={ contextValue }>
-      {children}
+      { children }
     </DeliveryContext.Provider>
   );
 }

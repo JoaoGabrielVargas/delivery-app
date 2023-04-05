@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import CartContext from '../context/cartContext';
 
 function NavBar() {
   const history = useHistory();
   const { name } = JSON.parse(localStorage.getItem('user'));
+  const { setCartItems, setCartTotalValue } = useContext(CartContext);
 
   const logout = () => {
     localStorage.clear();
+    setCartItems([]);
+    setCartTotalValue([]);
     history.push('/');
   };
 
