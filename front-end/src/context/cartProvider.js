@@ -4,7 +4,7 @@ import CartContext from './cartContext';
 
 function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
-  const [cartTotalValue, setCartTotalValue] = useState([]);
+  const [cartTotalValue, setCartTotalValue] = useState(0);
 
   useEffect(() => {
     setCartItems(JSON.parse(localStorage.getItem('cart')) || []);
