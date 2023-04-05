@@ -11,25 +11,14 @@ function CartProvider({ children }) {
   }, []);
 
   const sumCart = (array) => {
-    // const getCart = JSON.parse(localStorage.getItem('cart')) || [];
-    // console.log(getCart);
     const sum = array.reduce((acc, { subTotal }) => acc + subTotal, 0);
     console.log(sum);
     setCartTotalValue(sum);
     return sum;
   };
-  // const sumCart = () => {
-  //   const getCart = JSON.parse(localStorage.getItem('cart')) || [];
-  //   console.log(getCart);
-  //   const sum = getCart.reduce((acc, { subTotal }) => acc + subTotal, 0);
-  //   console.log(sum);
-  //   setcartTotalValue(sum);
-  //   return sum;
-  // };
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
-    // sumCart();
   }, [cartItems]);
 
   const addToCart = useCallback((item) => {
