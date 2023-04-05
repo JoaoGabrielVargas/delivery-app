@@ -4,21 +4,33 @@ import CartContext from '../context/cartContext';
 
 export default function ProductCard({ products, route }) {
   const { name, price, urlImage, id } = products;
-  const [quantity, setQuantity] = useState(0);
-  const { addToCart, removeFromCart, setQuant, cartTotal } = useContext(CartContext);
+  const [quant, setQuant] = useState(0);
+  // const [cartTotal, setQuantity] = useState(0);
+  const { addToCart } = useContext(CartContext);
+  const priceNumber = Number(price);
+  let quantity = 0; // observar se nos próximos requisitos isso vai influenciar, já que zera a variável nas renderizações
 
   const addButton = () => {
-    setQuantity(quantity + 1);
-    const priceNumber = Number(price);
+    quantity = quant;
+    quantity += 1;
+    setQuant(quantity);
     addToCart({ name, priceNumber, id, quantity });
   };
   const rmButton = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
+    if (quant > 0) {
+      quantity = quant;
+      quantity -= 1;
+      setQuant(quantity);
+      addToCart({ name, priceNumber, id, quantity });
     }
   };
   const manualChange = (e) => {
-    if (Number(e.target.value) >= 0) setQuantity(Number(e.target.value));
+    if (Number(e.target.value) >= 0) {
+      quantity = Number(e.target.value);
+      console.log(Number(e.target.value));
+      setQuant(quantity);
+      addToCart({ name, priceNumber, id, quantity });
+    }
   };
 
   return (
@@ -47,7 +59,7 @@ export default function ProductCard({ products, route }) {
           </button>
           <input
             data-testid={ `${route}__input-card-quantity-${id}` }
-            value={ quantity }
+            value={ quant }
             onChange={ manualChange }
           />
           <button

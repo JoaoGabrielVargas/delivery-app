@@ -5,11 +5,12 @@ import CartContext from '../context/cartContext';
 function NavBar() {
   const history = useHistory();
   const { name } = JSON.parse(localStorage.getItem('user'));
-  const { setCartItems } = useContext(CartContext);
+  const { setCartItems, setCartTotalValue } = useContext(CartContext);
 
   const logout = () => {
     localStorage.clear();
     setCartItems([]);
+    setCartTotalValue([]);
     history.push('/');
   };
 

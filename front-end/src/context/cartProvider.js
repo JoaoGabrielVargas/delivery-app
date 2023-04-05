@@ -4,30 +4,52 @@ import CartContext from './cartContext';
 
 function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+  const [cartTotalValue, setCartTotalValue] = useState([]);
 
   useEffect(() => {
     setCartItems(JSON.parse(localStorage.getItem('cart')) || []);
   }, []);
 
+  const sumCart = (array) => {
+    // const getCart = JSON.parse(localStorage.getItem('cart')) || [];
+    // console.log(getCart);
+    const sum = array.reduce((acc, { subTotal }) => acc + subTotal, 0);
+    console.log(sum);
+    setCartTotalValue(sum);
+    return sum;
+  };
+  // const sumCart = () => {
+  //   const getCart = JSON.parse(localStorage.getItem('cart')) || [];
+  //   console.log(getCart);
+  //   const sum = getCart.reduce((acc, { subTotal }) => acc + subTotal, 0);
+  //   console.log(sum);
+  //   setcartTotalValue(sum);
+  //   return sum;
+  // };
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    // sumCart();
+  }, [cartItems]);
+
   const addToCart = useCallback((item) => {
-    // console.log(cartItems);
     const { priceNumber, quantity } = item;
-    console.log(priceNumber * quantity);
-    // const subTotal = (priceNumber * quantity.toFixed(2));
     const invalidIndex = -1;
-    const existingItemIndex = cartItems.findIndex((i) => i.name === item.name);
-    if (existingItemIndex !== invalidIndex) {
+    const itemIndex = cartItems.findIndex((i) => i.name === item.name);
+    if (itemIndex !== invalidIndex) {
       const updatedCart = cartItems;
-      console.log(updatedCart);
-      updatedCart[existingItemIndex].quantity += 1;
-      updatedCart[existingItemIndex].subTotal = Number((priceNumber
+      updatedCart[itemIndex].quantity = quantity;
+      updatedCart[itemIndex].subTotal = Number((priceNumber
         * parseInt(quantity, 10)).toFixed(2));
       setCartItems(updatedCart);
+      sumCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(cartItems));
     } else {
-      setCartItems([...cartItems, {
-        ...item, quantity: 1, subTotal: priceNumber,
-      }]);
+      const newItem = [...cartItems, {
+        ...item, quantity, subTotal: priceNumber * quantity,
+      }];
+      setCartItems(newItem);
+      sumCart(newItem);
       localStorage.setItem('cart', JSON.stringify(cartItems));
     }
   }, [cartItems]);
@@ -43,19 +65,25 @@ function CartProvider({ children }) {
     setCartItems(updatedCart);
   }, [cartItems]);
 
-  const cartTotal = cartItems
-    .reduce((total, item) => total + item.quantity * item.price, 0);
-
   const contextValue = useMemo(() => (
     {
       cartItems,
       addToCart,
       removeFromCart,
       setQuant,
-      cartTotal,
       setCartItems,
+      cartTotalValue,
+      setCartTotalValue,
     }
-  ), [cartItems, addToCart, removeFromCart, setQuant, cartTotal, setCartItems]);
+  ), [
+    cartItems,
+    addToCart,
+    removeFromCart,
+    setQuant,
+    setCartItems,
+    cartTotalValue,
+    setCartTotalValue,
+  ]);
 
   return (
     <CartContext.Provider value={ contextValue }>

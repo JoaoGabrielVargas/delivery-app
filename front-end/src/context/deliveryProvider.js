@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import DeliveryContext from './deliveryContext';
@@ -16,29 +16,12 @@ function DeliveryProvider({ children }) {
     fetchData();
   }, []);
 
-  const addLocalStorage = useCallback(() => {
-    // const cart = cartItens;
-    // console.log(cart);
-    // const foundItem = cartItens.find((element) => element.id === id);
-    // foundItem.quantity += quantity;
-    // const productItem = {
-    //   id,
-    //   name,
-    //   price,
-    //   quantity,
-    //   subTotal: price * quantity,
-    // };
-    // localStorage.setItem('cart', JSON.stringify([...cartItens, productItem]));
-    console.log('olaaaaaa');
-  }, []);
-
   const contextValue = useMemo(() => (
     {
       products,
       setProducts,
-      addLocalStorage,
     }
-  ), [products, addLocalStorage]);
+  ), [products]);
 
   return (
     <DeliveryContext.Provider value={ contextValue }>
