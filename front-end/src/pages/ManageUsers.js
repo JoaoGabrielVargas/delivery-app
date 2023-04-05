@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Header from '../components/Header';
+
+import {
+  emailValidation,
+  passwordValidation,
+  nameValidation,
+} from '../services/validations';
 
 export default function ManageUsers() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [disable, setDisable] = useState(false);
   const [password, setPassword] = useState('');
   const ROUTE = 'admin_manage';
+  console.log(disable);
+
+  const verifyBtn = useCallback(() => {
+    const verifyEmail = emailValidation(email);
+    const verifyPassword = passwordValidation(password);
+    const verifyName = nameValidation(name);
+    const dataValidation = verifyEmail && verifyPassword && verifyName;
+    setDisable(!(dataValidation));
+  }, [email, password, name]);
+
+  useEffect(() => {
+    verifyBtn();
+  }, [email, password, name, setDisable, verifyBtn]);
   return (
     <div className="manage-users-container">
       <Header />
@@ -40,6 +60,8 @@ export default function ManageUsers() {
       <button
         data-testid={ `${ROUTE}__button-register` }
         type="button"
+        disabled={ disable }
+        /* onClick={ handleClick } */
       >
         CADASTRAR
       </button>
