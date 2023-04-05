@@ -5,7 +5,6 @@ import CartContext from '../context/cartContext';
 export default function ProductCard({ products, route }) {
   const { name, price, urlImage, id } = products;
   const [quant, setQuant] = useState(0);
-  // const [cartTotal, setQuantity] = useState(0);
   const { addToCart } = useContext(CartContext);
   const priceNumber = Number(price);
   let quantity = 0; // observar se nos próximos requisitos isso vai influenciar, já que zera a variável nas renderizações
