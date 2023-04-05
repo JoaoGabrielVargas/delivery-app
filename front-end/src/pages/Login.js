@@ -23,6 +23,7 @@ function Login() {
 
   const redirectRouter = (role) => {
     if (role === 'customer') history.push('/customer/products');
+    if (role === 'administrator') history.push('/admin/manage');
   };
 
   const handleClick = async () => {
