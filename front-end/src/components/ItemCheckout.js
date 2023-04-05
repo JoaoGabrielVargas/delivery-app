@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 export default function ItemCheckout({ item, index }) {
   const route = 'customer_checkout__';
-  const { id, name, quantity, priceNumber, subTotal } = item;
+  const { name, quantity, priceNumber, subTotal } = item;
 
   return (
     <tr className="item-checkout">
       <td data-testid={ `${route}element-order-table-item-number-${index}` }>
-        { id }
+        { index + 1 }
       </td>
       <td data-testid={ `${route}element-order-table-name-${index}` }>
         { name }
