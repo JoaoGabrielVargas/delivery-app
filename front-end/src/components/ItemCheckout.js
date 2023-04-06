@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import CartContext from '../context/cartContext';
 
 export default function ItemCheckout({ item, index }) {
   const route = 'customer_checkout__';
   const { name, quantity, priceNumber, subTotal } = item;
+  const { removeItem } = useContext(CartContext);
 
   return (
     <tr className="item-checkout">
@@ -26,6 +28,7 @@ export default function ItemCheckout({ item, index }) {
         <button
           type="button"
           data-testid={ `${route}element-order-table-remove-${index}` }
+          onClick={ () => removeItem(name) }
         >
           remover
         </button>

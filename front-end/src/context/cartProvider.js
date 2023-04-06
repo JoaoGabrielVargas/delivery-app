@@ -42,9 +42,10 @@ function CartProvider({ children }) {
     }
   }, [cartItems]);
 
-  const removeFromCart = useCallback((name) => {
-    const updatedCart = cartItems.filter((item) => item.name !== name);
-    setCartItems(updatedCart);
+  const removeItem = useCallback((itemName) => {
+    const restCart = cartItems.filter((elem) => elem.name !== itemName);
+    sumCart(restCart);
+    setCartItems(restCart);
   }, [cartItems]);
 
   const setQuant = useCallback((name, quantity) => {
@@ -57,7 +58,7 @@ function CartProvider({ children }) {
     {
       cartItems,
       addToCart,
-      removeFromCart,
+      removeItem,
       setQuant,
       setCartItems,
       cartTotalValue,
@@ -66,7 +67,7 @@ function CartProvider({ children }) {
   ), [
     cartItems,
     addToCart,
-    removeFromCart,
+    removeItem,
     setQuant,
     setCartItems,
     cartTotalValue,
