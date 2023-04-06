@@ -8,7 +8,7 @@ import { getDate } from '../services/date';
 
 function CustomerCheckout() {
   const history = useHistory();
-  const { cartItems, cartTotalValue } = useContext(CartContext);
+  const { cartItems, cartTotalValue, token } = useContext(CartContext);
   const [sellers, setSellers] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [deliveryNumber, setDeliveryNumber] = useState([]);
@@ -34,7 +34,7 @@ function CustomerCheckout() {
     try {
       const sale = await axios.post('http://localhost:3001/checkout', {
         id, sellerId, cartTotalValue, deliveryAddress, deliveryNumber, today, status,
-      });
+      }, { headers: { Authorization: token } });
       history.push(`/customer/orders/${sale.data.id}`);
     } catch (err) {
       console.log(err);
