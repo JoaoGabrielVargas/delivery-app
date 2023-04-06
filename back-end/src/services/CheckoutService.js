@@ -7,13 +7,12 @@ const getSellers = async () => {
 
 const newSale = async ({
   id,
-  two,
+  sellerId,
   cartTotalValue,
   deliveryAddress,
   deliveryNumber,
   today, status }) => {
   const userId = id;
-  const sellerId = two;
   const totalPrice = cartTotalValue;
   const saleDate = today;
   const sale = await Sale.create({

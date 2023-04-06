@@ -12,12 +12,14 @@ function CustomerCheckout() {
   const [sellers, setSellers] = useState([]);
   const [deliveryAddress, setDeliveryAddress] = useState([]);
   const [deliveryNumber, setDeliveryNumber] = useState([]);
+  const [sellerId, setSellerId] = useState([]);
   const { id } = JSON.parse(localStorage.getItem('user'));
 
   const getSellers = async () => {
     try {
       const request = await axios.get('http://localhost:3001/checkout');
       setSellers(request.data);
+      setSellerId(request.data[0].id);
     } catch (err) {
       console.log(err);
     }
@@ -29,12 +31,10 @@ function CustomerCheckout() {
   const newSale = async () => {
     const today = getDate();
     const status = 'pendente';
-    const two = 2;
     try {
       const sale = await axios.post('http://localhost:3001/checkout', {
-        id, two, cartTotalValue, deliveryAddress, deliveryNumber, today, status,
+        id, sellerId, cartTotalValue, deliveryAddress, deliveryNumber, today, status,
       });
-      // const saleId = sale.data.id;
       history.push(`/customer/orders/${sale.data.id}`);
     } catch (err) {
       console.log(err);
@@ -66,8 +66,6 @@ function CustomerCheckout() {
         <button
           type="button"
           data-testid="customer_checkout__element-order-total-price"
-        // onClick={ () => history.push('/customer/checkout') }
-        // disabled={ disable }
         >
           <p data-testid="customer_products__checkout-bottom-value">
             { Number(cartTotalValue).toFixed(2).toString().replace('.', ',') }
@@ -80,6 +78,7 @@ function CustomerCheckout() {
           <select
             id="select-seller"
             data-testid="customer_checkout__select-seller"
+            onChange={ (e) => setSellerId(e.target.value) }
           >
             { sellers.map((item) => (
               <option key={ item.name } value={ item.id }>{ item.name }</option>
