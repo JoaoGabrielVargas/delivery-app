@@ -12,7 +12,6 @@ function CartProvider({ children }) {
 
   const sumCart = (array) => {
     const sum = array.reduce((acc, { subTotal }) => acc + subTotal, 0);
-    console.log(sum);
     setCartTotalValue(sum);
     return sum;
   };
