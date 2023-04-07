@@ -33,7 +33,14 @@ function CustomerCheckout() {
     const status = 'pendente';
     try {
       const sale = await axios.post('http://localhost:3001/checkout', {
-        id, sellerId, cartTotalValue, deliveryAddress, deliveryNumber, today, status,
+        id,
+        sellerId,
+        cartTotalValue,
+        deliveryAddress,
+        deliveryNumber,
+        today,
+        status,
+        cartItems,
       }, { headers: { Authorization: token } });
       history.push(`/customer/orders/${sale.data.id}`);
     } catch (err) {
