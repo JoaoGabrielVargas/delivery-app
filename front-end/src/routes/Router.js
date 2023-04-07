@@ -14,6 +14,7 @@ function Routes() {
       <Route path="/register" component={ Register } />
       <Route path="/customer/checkout" component={ CustomerCheckout } />
       <Route path="/admin/manage" component={ ManageUsers } />
+      <Route path="/customer/orders/" />
       <Route path="/" component={ Home } />
     </Switch>
   );

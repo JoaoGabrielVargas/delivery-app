@@ -1,10 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import ItemCheckout from '../components/ItemCheckout';
 import NavBar from '../components/NavBar';
 import CartContext from '../context/cartContext';
+import { getDate } from '../services/date';
 
 function CustomerCheckout() {
-  const { cartItems, cartTotalValue } = useContext(CartContext);
+  const history = useHistory();
+  const { cartItems, cartTotalValue, token } = useContext(CartContext);
+  const [sellers, setSellers] = useState([]);
+  const [deliveryAddress, setDeliveryAddress] = useState([]);
+  const [deliveryNumber, setDeliveryNumber] = useState([]);
+  const [sellerId, setSellerId] = useState([]);
+  const { id } = JSON.parse(localStorage.getItem('user'));
+
+  const getSellers = async () => {
+    try {
+      const request = await axios.get('http://localhost:3001/checkout');
+      setSellers(request.data);
+      setSellerId(request.data[0].id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleChange = (e, setState) => {
+    const { value } = e.target;
+    setState(value);
+  };
+  const newSale = async () => {
+    const today = getDate();
+    const status = 'pendente';
+    try {
+      const sale = await axios.post('http://localhost:3001/checkout', {
+        id, sellerId, cartTotalValue, deliveryAddress, deliveryNumber, today, status,
+      }, { headers: { Authorization: token } });
+      history.push(`/customer/orders/${sale.data.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getSellers();
+  }, []);
+
   return (
     <div>
       <NavBar />
@@ -26,8 +66,6 @@ function CustomerCheckout() {
         <button
           type="button"
           data-testid="customer_checkout__element-order-total-price"
-        // onClick={ () => history.push('/customer/checkout') }
-        // disabled={ disable }
         >
           <p data-testid="customer_products__checkout-bottom-value">
             { Number(cartTotalValue).toFixed(2).toString().replace('.', ',') }
@@ -40,17 +78,25 @@ function CustomerCheckout() {
           <select
             id="select-seller"
             data-testid="customer_checkout__select-seller"
+            onChange={ (e) => setSellerId(e.target.value) }
           >
-            <option value="Seller">Seller</option>
-            <option value="Seller">Seller</option>
-            <option value="Seller">Seller</option>
+            { sellers.map((item) => (
+              <option key={ item.name } value={ item.id }>{ item.name }</option>
+            )) }
           </select>
         </label>
-        <input data-testid="customer_checkout__input-address" />
-        <input data-testid="customer_checkout__input-address-number" />
+        <input
+          data-testid="customer_checkout__input-address"
+          onChange={ (e) => handleChange(e, setDeliveryAddress) }
+        />
+        <input
+          data-testid="customer_checkout__input-address-number"
+          onChange={ (e) => handleChange(e, setDeliveryNumber) }
+        />
         <button
           type="button"
           data-testid="customer_checkout__button-submit-order"
+          onClick={ () => newSale() }
         >
           FINALIZAR PEDIDO
         </button>
