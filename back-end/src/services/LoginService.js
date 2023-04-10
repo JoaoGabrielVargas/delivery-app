@@ -1,7 +1,6 @@
 const { User } = require('../database/models');
 const verifyPassword = require('../utils/hashVerification');
 const { generateToken } = require('../utils/JWT');
-// const { generateToken } = require('../utils/JWT');
 
 const validateLogin = async (body) => {
   const { email, password } = body;
@@ -11,6 +10,7 @@ const validateLogin = async (body) => {
   const token = generateToken(result.dataValues);
 
   const userStorage = {
+    id: result.id,
     name: result.name,
     email: result.email,
     role: result.role,

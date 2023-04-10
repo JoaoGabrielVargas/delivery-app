@@ -5,6 +5,7 @@ import CartContext from './cartContext';
 function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [cartTotalValue, setCartTotalValue] = useState(0);
+  const [token, setToken] = useState();
 
   useEffect(() => {
     setCartItems(JSON.parse(localStorage.getItem('cart')) || []);
@@ -63,6 +64,8 @@ function CartProvider({ children }) {
       setCartItems,
       cartTotalValue,
       setCartTotalValue,
+      token,
+      setToken,
     }
   ), [
     cartItems,
@@ -72,6 +75,8 @@ function CartProvider({ children }) {
     setCartItems,
     cartTotalValue,
     setCartTotalValue,
+    token,
+    setToken,
   ]);
 
   return (

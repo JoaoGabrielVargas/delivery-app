@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { emailValidation, passwordValidation } from '../services/validations';
+import CartContext from '../context/cartContext';
 import '../style/pages/Login.css';
 
 function Login() {
@@ -9,8 +10,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const [disable, setDisable] = useState(false);
   const [error, setError] = useState(false);
-  // const [token, setToken] = useState('');
   const ROUTE = 'common_login';
+  const { setToken } = useContext(CartContext);
 
   const verifyBtn = useCallback(() => {
     const verifyEmail = emailValidation(email);
@@ -30,6 +31,7 @@ function Login() {
     try {
       const request = await axios.post('http://localhost:3001/login', { email, password });
       localStorage.setItem('user', JSON.stringify(request.data));
+      setToken(request.data.token);
       redirectRouter(request.data.role);
     } catch (err) {
       console.log(err);
