@@ -2,8 +2,11 @@ const { addNewUser } = require('../services/RegisterService');
 
 const addUser = async (req, res) => {
   const { body } = req;
-  const { statusCode, message } = await addNewUser(body);
-  return res.status(statusCode).json(message);
+  const { statusCode, user } = await addNewUser(body);
+  if (user.message === 'Conflict') {
+    return res.status(statusCode).json({ message: user.message, user, token: null });
+  }
+  return res.status(statusCode).json({ token: user.message, user }); 
 };
 
 module.exports = addUser;
