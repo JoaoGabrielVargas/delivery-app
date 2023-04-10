@@ -7,7 +7,7 @@ const validateLogin = async (body) => {
   const result = await User.findOne({ where: { email } });
   if (!result) return { statusCode: 404, message: 'Not found' };
 
-  const token = generateToken({ email, password });
+  const token = generateToken(result.dataValues);
 
   const userStorage = {
     id: result.id,

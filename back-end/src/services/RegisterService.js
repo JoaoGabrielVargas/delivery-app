@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { User } = require('../database/models');
 const createHash = require('../utils/createHash');
+const { generateToken } = require('../utils/JWT'); 
 
 const userExists = async (name, email) => {
   const result = await User.findOne({ where: { [Op.or]: [{ email }, { name }] } });
@@ -10,21 +11,23 @@ const userExists = async (name, email) => {
 
 const addNewUser = async (body) => {
   const { name, email, password, role } = body;
+  /* const token = generateToken({ email, password }); */
   const passwordHash = createHash(password);
 
   const alreadyExists = await userExists(name, email);
+  const token = generateToken({ email, password, name, role }); 
 
-  if (alreadyExists) return { statusCode: 409, message: 'Conflict' };
-
-  try {
-    await User.create({
-      name,
+  const user = {
+    name,
       email,
       password: passwordHash,
       role,
-    });
-    // retorna o role para ativar o redirecionamento para a página devida.
-    return { statusCode: 201, message: role };
+  };
+  if (alreadyExists) return { statusCode: 409, user: { ...user, message: 'Conflict' } };
+  try {
+   await User.create(user);
+  
+    return { statusCode: 201, user: { ...user, message: token } };
   } catch (err) {
     return { statusCode: 401, message: err };
   }

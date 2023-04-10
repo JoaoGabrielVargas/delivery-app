@@ -7,8 +7,8 @@ const jwtConfig = {
   algorithm: 'HS256',
 };
 
-const generateToken = ({ email, password }) => {
-  const result = jwt.sign({ email, password }, secretKey, jwtConfig);
+const generateToken = (user) => {
+  const result = jwt.sign({ payload: { user } }, secretKey, jwtConfig);
   return result;
 };
 
@@ -17,7 +17,7 @@ const tokenDecode = async (token) => {
     throw new Error('Undefined Token');
   }
   try {
-  const response = jwt.verify(token, secretKey);
+  const response = jwt.decode(token, secretKey);
   return response;
   } catch (error) {
     return { message: error.message };

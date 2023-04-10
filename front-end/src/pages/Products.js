@@ -19,7 +19,7 @@ function Products() {
       <div className="card-container">
         {
           products.map((el) => (<ProductCard
-            key={ el.index }
+            key={ el.id }
             products={ el }
             route="customer_products"
           />))

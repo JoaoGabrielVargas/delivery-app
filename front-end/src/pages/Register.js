@@ -34,8 +34,9 @@ function Register() {
 
   const handleClick = async () => {
     try {
-      const request = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
-      redirectRouter(request.data);
+      const { data: { user }, token } = await axios.post('http://localhost:3001/register', { name, email, password, role: 'customer' });
+      localStorage.setItem('user', JSON.stringify({ ...user, token }));
+      redirectRouter(user.role);
     } catch (err) {
       setError(true);
     }

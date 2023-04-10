@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../components/Header';
 
 import {
@@ -10,10 +12,35 @@ import {
 export default function ManageUsers() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('seller');
   const [disable, setDisable] = useState(false);
+  const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const ROUTE = 'admin_manage';
-  console.log(disable);
+  const history = useHistory();
+
+  const handleClick = async () => {
+    try {
+      const token = JSON.parse(localStorage.getItem('user')) || undefined;
+      await axios.post(
+        'http://localhost:3001/admin/manage',
+        { email, password, name, role },
+        {
+          headers: {
+            Authorization: `${token.token}`,
+          },
+        },
+      );
+      if (!token) {
+        localStorage.clear();
+        history.push('/');
+      }
+      /*       localStorage.setItem('user', JSON.stringify(data));
+ */ } catch (err) {
+      console.log(err);
+      setError(true);
+    }
+  };
 
   const verifyBtn = useCallback(() => {
     const verifyEmail = emailValidation(email);
@@ -53,6 +80,8 @@ export default function ManageUsers() {
       <select
         name="admin-manage-select-role"
         data-testid={ `${ROUTE}__select-role` }
+        onChange={ (e) => setRole(e.target.value) }
+        value={ role }
       >
         <option value="seller" defaultValue>Vendedor</option>
         <option value="customer"> Cliente </option>
@@ -61,10 +90,14 @@ export default function ManageUsers() {
         data-testid={ `${ROUTE}__button-register` }
         type="button"
         disabled={ disable }
-        /* onClick={ handleClick } */
+        onClick={ handleClick }
       >
         CADASTRAR
       </button>
+      {
+        error
+        && <p data-testid={ `${ROUTE}__element-invalid-register` }> Dados inválidos </p>
+      }
     </div>
   );
 }
