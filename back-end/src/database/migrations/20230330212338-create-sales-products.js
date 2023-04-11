@@ -23,7 +23,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         references: {
-          model: 'sales',
+          model: 'products',
           key: 'id',
         },
         field: 'product_id',
@@ -36,7 +36,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, _Sequelize) {
     await queryInterface.dropTable('sales_products');
   },
 };

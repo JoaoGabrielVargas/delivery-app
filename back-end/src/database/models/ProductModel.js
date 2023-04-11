@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const ProductTable = sequelize.define(
+  const Product = sequelize.define(
 'Product',
     {
       id: {
@@ -18,5 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  return ProductTable;
+  Product.associate = ({ SaleProduct }) => {
+    Product.hasMany(SaleProduct, { foreignKey: 'productId', as: 'productId' });
+  }
+
+  return Product;
 };
