@@ -6,6 +6,10 @@ const getSellers = async () => {
   return result;
 };
 
+const createSaleProduct = async (mappingCartItems) => {
+  await SaleProduct.bulkCreate(mappingCartItems);
+};
+
 const newSale = async ({
   id, sellerId, cartTotalValue, deliveryAddress, deliveryNumber, today, status, cartItems }) => {
   const userId = id;
@@ -19,7 +23,7 @@ const newSale = async ({
     productId: produto.id,
     quantity: produto.quantity,
   }));
-  await SaleProduct.bulkCreate(mappingCartItems);
+  await createSaleProduct(mappingCartItems);
   return sale;
 };
 
