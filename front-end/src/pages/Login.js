@@ -51,7 +51,7 @@ function Login() {
       if (user.role === 'seller') history.push('/seller/orders');
     }
     // console.log(role);
-  }, []);
+  }, [history]);
 
   return (
     <div className="login">
