@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import moment from 'moment';
 import { useLocation } from 'react-router-dom';
+import moment from 'moment';
 
 export default function OrderCard({ sale, route }) {
   const { id, totalPrice, status, saleDate, deliveryAddress } = sale;
 
-  const history = useHistory();
   const formatDate = moment(saleDate).format('DD/MM/YYYY');
 
   const isRouteSeller = route === 'seller_orders__';
@@ -37,12 +35,12 @@ export default function OrderCard({ sale, route }) {
           R$
           { totalPrice.replace('.', ',') }
         </p>
-      </div>          
-        {
-          isRouteSeller
-        && <p data-testid={ `${route}element-card-price-${id}` }>{deliveryAddress}</p>
-        }
       </div>
+      {
+        isRouteSeller
+        && <p data-testid={ `${route}element-card-price-${id}` }>{deliveryAddress}</p>
+      }
+
     </a>
   );
 }
@@ -57,4 +55,3 @@ OrderCard.propTypes = {
   }).isRequired,
   route: PropTypes.string.isRequired,
 };
-
