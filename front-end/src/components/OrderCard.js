@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 export default function OrderCard({ sale }) {
   const { id, totalPrice, status, saleDate } = sale;
 
   const route = 'customer_orders__';
   const history = useHistory();
+  const formatDate = moment(saleDate).format('DD/MM/YYYY');
 
   return (
     <button
@@ -25,7 +27,7 @@ export default function OrderCard({ sale }) {
         <p
           data-testid={ `${route}element-order-date-${id}` }
         >
-          {saleDate}
+          {formatDate}
         </p>
         <p
           data-testid={ `${route}element-card-price-${id}` }
