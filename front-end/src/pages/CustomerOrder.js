@@ -28,6 +28,7 @@ function CustomerOrder() {
           sales.map((sale) => (<OrderCard
             key={ sale.id }
             sale={ sale }
+            route="customer_orders__"
           />))
         }
       </div>
