@@ -11,6 +11,7 @@ const AdmRegisterRoute = require('../routes/AdmRegisterRoute');
 
 const CheckoutRouter = require('../routes/CheckoutRouter');
 const OrdersRouter = require('../routes/OrdersRouter');
+const SalesRouter = require('../routes/SalesRouter');
 
 app.use(express.json()); 
 app.use(express.static('public'));  
@@ -22,5 +23,6 @@ app.get('/coffee', (_req, res) => res.status(418).end());
 app.use('/products', ProductsRouter);
 app.use('/checkout', CheckoutRouter);
 app.use('/orders', OrdersRouter);
+app.use('/sales', SalesRouter);
   
 module.exports = app;

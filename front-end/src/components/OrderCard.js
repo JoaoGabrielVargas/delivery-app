@@ -2,27 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
+import { useLocation } from 'react-router-dom';
 
-export default function OrderCard({ sale }) {
-  const { id, totalPrice, status, saleDate } = sale;
+export default function OrderCard({ sale, route }) {
+  const { id, totalPrice, status, saleDate, deliveryAddress } = sale;
 
-  const route = 'customer_orders__';
   const history = useHistory();
   const formatDate = moment(saleDate).format('DD/MM/YYYY');
 
+  const isRouteSeller = route === 'seller_orders__';
+  const { pathname } = useLocation();
+  const page = pathname.split('/')[1];
+
   return (
-    <button
-      type="button"
-      onClick={ () => history.push(`/customer/orders/${id}`) }
-    >
+    <a href={ `/${page}/orders/${id}` }>
+
       <div className="order-cards">
         <p data-testid={ `${route}element-order-id-${id}` }>
-          {id}
+          { id }
         </p>
         <p
           data-testid={ `${route}element-delivery-status-${id}` }
         >
-          {status}
+          { status }
         </p>
         <p
           data-testid={ `${route}element-order-date-${id}` }
@@ -35,14 +37,24 @@ export default function OrderCard({ sale }) {
           R$
           { totalPrice.replace('.', ',') }
         </p>
+      </div>          
+        {
+          isRouteSeller
+        && <p data-testid={ `${route}element-card-price-${id}` }>{deliveryAddress}</p>
+        }
       </div>
-    </button>
+    </a>
   );
 }
 
 OrderCard.propTypes = {
-  id: PropTypes.number,
-  totalPrice: PropTypes.string,
-  status: PropTypes.string,
-  saleDate: PropTypes.instanceOf(Date),
-}.isRequired;
+  sale: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    totalPrice: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    deliveryAddress: PropTypes.string.isRequired,
+    saleDate: PropTypes.instanceOf(Date).isRequired,
+  }).isRequired,
+  route: PropTypes.string.isRequired,
+};
+
