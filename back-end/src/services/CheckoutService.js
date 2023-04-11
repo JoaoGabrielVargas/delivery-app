@@ -1,5 +1,4 @@
 const { User, Sale, SaleProduct } = require('../database/models');
-// const SaleProduct = require('../database/models/SaleProductModel');
 
 const getSellers = async () => {
   const result = await User.findAll({ where: { role: 'seller' } });

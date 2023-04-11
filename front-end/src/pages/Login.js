@@ -43,6 +43,16 @@ function Login() {
     verifyBtn();
   }, [email, password, setDisable, verifyBtn]);
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user')) || undefined;
+    if (user) {
+      if (user.role === 'customer') history.push('/customer/products');
+      if (user.role === 'administrator') history.push('/admin/manage');
+      if (user.role === 'seller') history.push('/seller/orders');
+    }
+    // console.log(role);
+  }, []);
+
   return (
     <div className="login">
       <form>

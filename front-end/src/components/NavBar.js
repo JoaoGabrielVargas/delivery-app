@@ -19,12 +19,14 @@ function NavBar() {
       <button
         data-testid="customer_products__element-navbar-link-products"
         type="button"
+        onClick={ () => { history.push('/customer/products'); } }
       >
         PRODUTOS
       </button>
       <button
         data-testid="customer_products__element-navbar-link-orders"
         type="button"
+        onClick={ () => { history.push('/customer/orders'); } }
       >
         MEUS PEDIDOS
       </button>
